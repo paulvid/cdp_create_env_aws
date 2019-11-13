@@ -58,7 +58,7 @@ cdp_create_env.sh <base_dir> <prefix> <credential> <region> <key>
 ### 3. Verify periodically your environment unstil status says AVAILABLE
 
 ```
-cdp_describe_env.sh <prefix> ]
+cdp_describe_env.sh <prefix> 
 ```
 
 # Authors
