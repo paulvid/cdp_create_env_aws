@@ -18,10 +18,6 @@ This set of scripts automates the creationg of all minimal pre-requisites to set
 
 * AWS cli: Configure AWS cli with your credentials and region
 * CDP cli: Configure CDP cli with your credentials and region
-* WXM: 
-  * Docker
-  * Uploader and WXM (uploader.tar and altus.json), see [wiki](https://cloudera.atlassian.net/wiki/spaces/ENG/pages/100831814/Workload+XM+Setup+How+to+collect+upload+workloads+from+customer+clusters)
-* Local nifi instance
 
 ## Setup
 
