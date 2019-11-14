@@ -55,7 +55,7 @@ Create CDP environment:
 cdp_create_env.sh <base_dir> <prefix> <credential> <region> <key> 
 ```
 
-### 3. Verify periodically your environment unstil status says AVAILABLE
+### 3. Verify periodically until environment status is AVAILABLE
 
 ```
 cdp_describe_env.sh <prefix> 
