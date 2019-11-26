@@ -53,7 +53,7 @@ sleep_duration=3
 # Creating roles (and sleeping in between)
 
 # IDBROKER
-aws iam create-role --role-name $2-idbroker-role  --assume-role-policy-document file://$1/scripts/cdp/aws-pre-req/aws-ec2-role-trust-policy.json
+aws iam create-role --role-name $2-idbroker-role  --assume-role-policy-document file://$1/aws-ec2-role-trust-policy.json
 sleep $sleep_duration 
 
 aws iam create-instance-profile --instance-profile-name $2-idbroker-role
@@ -69,8 +69,8 @@ sleep $sleep_duration
 
 # DL ADMIN
 
-cat $1/scripts/cdp/aws-pre-req/aws-idbroker-role-trust-policy.json  | sed s/AWS_ACCOUNT_ID/$AWS_ACCOUNT_ID/g | sed s/IDBROKER_ROLE/$IDBROKER_ROLE/g  > $1/scripts/cdp/aws-pre-req/tmp
-aws iam create-role --role-name $2-datalake-admin-role --assume-role-policy-document file://$1/scripts/cdp/aws-pre-req/tmp
+cat $1/aws-idbroker-role-trust-policy.json  | sed s/AWS_ACCOUNT_ID/$AWS_ACCOUNT_ID/g | sed s/IDBROKER_ROLE/$IDBROKER_ROLE/g  > $1/tmp
+aws iam create-role --role-name $2-datalake-admin-role --assume-role-policy-document file://$1/tmp
 sleep $sleep_duration 
 
 
@@ -86,7 +86,7 @@ sleep $sleep_duration
 
 # LOG
 
-aws iam create-role --role-name $2-log-role --assume-role-policy-document file://$1/scripts/cdp/aws-pre-req/aws-ec2-role-trust-policy.json
+aws iam create-role --role-name $2-log-role --assume-role-policy-document file://$1/aws-ec2-role-trust-policy.json
 sleep $sleep_duration 
 
 aws iam attach-role-policy --role-name $2-log-role --policy-arn arn:aws:iam::$AWS_ACCOUNT_ID:policy/$2-log-policy-s3access
@@ -98,7 +98,7 @@ sleep $sleep_duration
 
 # RANGER AUDIT
 
-aws iam create-role --role-name $2-ranger-audit-role --assume-role-policy-document file://$1/scripts/cdp/aws-pre-req/tmp
+aws iam create-role --role-name $2-ranger-audit-role --assume-role-policy-document file://$1/tmp
 sleep $sleep_duration 
 
 aws iam attach-role-policy --role-name $2-ranger-audit-role --policy-arn arn:aws:iam::$AWS_ACCOUNT_ID:policy/$2-bucket-policy-s3access
@@ -111,6 +111,6 @@ aws iam attach-role-policy --role-name $2-ranger-audit-role --policy-arn arn:aws
 sleep $sleep_duration 
 
 
-rm $1/scripts/cdp/aws-pre-req/tmp
+rm $1/tmp
 
 echo "Roles Created!"
