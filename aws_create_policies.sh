@@ -51,31 +51,31 @@ sleep_duration=3
 
 # Creating policies (and sleeping in between)
 
-aws iam create-policy --policy-name $2-idbroker-assume-role-policy --policy-document file://$1/scripts/cdp/aws-pre-req/aws-idbroker-assume-role-policy.json 
+aws iam create-policy --policy-name $2-idbroker-assume-role-policy --policy-document file://$1/aws-idbroker-assume-role-policy.json 
 sleep $sleep_duration 
 
-cat $1/scripts/cdp/aws-pre-req/aws-log-policy-s3access.json | sed s/LOGS_LOCATION_BASE/$LOGS_LOCATION_BASE/g > $1/scripts/cdp/aws-pre-req/tmp
-aws iam create-policy --policy-name $2-log-policy-s3access --policy-document file://$1/scripts/cdp/aws-pre-req/tmp
+cat $1/aws-log-policy-s3access.json | sed s/LOGS_LOCATION_BASE/$LOGS_LOCATION_BASE/g > $1/tmp
+aws iam create-policy --policy-name $2-log-policy-s3access --policy-document file://$1/tmp
 sleep $sleep_duration 
 
-cat $1/scripts/cdp/aws-pre-req/aws-ranger-audit-policy-s3access.json | sed s/STORAGE_LOCATION_BASE/$STORAGE_LOCATION_BASE/g | sed s/DATALAKE_BUCKET/$DATALAKE_BUCKET/g > $1/scripts/cdp/aws-pre-req/tmp
-aws iam create-policy --policy-name $2-ranger-audit-policy-s3access --policy-document file://$1/scripts/cdp/aws-pre-req/tmp
+cat $1/aws-ranger-audit-policy-s3access.json | sed s/STORAGE_LOCATION_BASE/$STORAGE_LOCATION_BASE/g | sed s/DATALAKE_BUCKET/$DATALAKE_BUCKET/g > $1/tmp
+aws iam create-policy --policy-name $2-ranger-audit-policy-s3access --policy-document file://$1/tmp
 sleep $sleep_duration 
 
-cat  $1/scripts/cdp/aws-pre-req/aws-datalake-admin-policy-s3access.json | sed s/STORAGE_LOCATION_BASE/$STORAGE_LOCATION_BASE/g > $1/scripts/cdp/aws-pre-req/tmp
-aws iam create-policy --policy-name $2-datalake-admin-policy-s3access --policy-document file://$1/scripts/cdp/aws-pre-req/tmp
+cat  $1/aws-pre-req/aws-datalake-admin-policy-s3access.json | sed s/STORAGE_LOCATION_BASE/$STORAGE_LOCATION_BASE/g > $1/tmp
+aws iam create-policy --policy-name $2-datalake-admin-policy-s3access --policy-document file://$1/tmp
 sleep $sleep_duration 
 
 
-cat $1/scripts/cdp/aws-pre-req/aws-bucket-policy-s3access.json  | sed s/DATALAKE_BUCKET/$DATALAKE_BUCKET/g > $1/scripts/cdp/aws-pre-req/tmp
-aws iam create-policy --policy-name $2-bucket-policy-s3access --policy-document file://$1/scripts/cdp/aws-pre-req/tmp
+cat $1/aws-pre-req/aws-bucket-policy-s3access.json  | sed s/DATALAKE_BUCKET/$DATALAKE_BUCKET/g > $1/tmp
+aws iam create-policy --policy-name $2-bucket-policy-s3access --policy-document file://$1/tmp
 sleep $sleep_duration   
 
 
-cat $1/scripts/cdp/aws-pre-req/aws-dynamodb-policy.json | sed s/DYNAMODB_TABLE_NAME/$DYNAMODB_TABLE_NAME/g > $1/scripts/cdp/aws-pre-req/tmp
-aws iam create-policy --policy-name $2-dynamodb-policy --policy-document file://$1/scripts/cdp/aws-pre-req/tmp
+cat $1/aws-pre-req/aws-dynamodb-policy.json | sed s/DYNAMODB_TABLE_NAME/$DYNAMODB_TABLE_NAME/g > $1/tmp
+aws iam create-policy --policy-name $2-dynamodb-policy --policy-document file://$1/tmp
 sleep $sleep_duration 
 
-rm $1/scripts/cdp/aws-pre-req/tmp
+rm $1/tmp
 
 echo "Minimum policies created!"
