@@ -1,8 +1,8 @@
 #!/bin/bash 
+set -o nounset
 
-
- display_usage() { 
-	echo "
+display_usage() { 
+    echo "
 Usage:
     $(basename "$0") <prefix> [--help or -h]
 
@@ -16,7 +16,7 @@ Arguments:
 }
 
 # check whether user had supplied -h or --help . If yes display usage 
-if [[ ( $1 == "--help") ||  $1 == "-h" ]] 
+if [[ ( ${1:-x} == "--help") ||  ${1:-x} == "-h" ]] 
 then 
     display_usage
     exit 0
@@ -38,5 +38,6 @@ then
     exit 1
 fi 
 
+prefix=$1
 
-cdp environments describe-environment --environment-name $1-cdp-env
+cdp environments describe-environment --environment-name ${prefix}-cdp-env
