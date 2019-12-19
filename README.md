@@ -32,28 +32,37 @@ git clone https://github.com/paulvid/cdp_create_env_aws.git
 
 Create AWS S3 bucket:
 ```
-aws_create_bucket.sh <base_dir> <prefix> <region> 
+aws_create_bucket.sh <prefix> <region> 
 ```
 
 Purge AWS policies and roles (optional):
 ```
-aws_purge_roles_policies.sh <base_dir> <prefix> 
+aws_purge_roles_policies.sh <prefix> 
 ```
 
 Create AWS policies:
 ```
-aws_create_policies.sh <base_dir> <prefix>
+aws_create_policies.sh  <prefix>
 ```
 
-Create AWS roles:
+Create AWS network:
 ```
-aws_create_roles.sh <base_dir> <prefix> <bucket> 
+aws_create_network.sh <prefix> 
+```
+
+Create AWS roles, and note the subnet, vpc and group ids:
+```
+aws_create_roles.sh <prefix> <bucket> 
 ```
 
 Create CDP environment:
 ```
-cdp_create_env.sh <base_dir> <prefix> <credential> <region> <key> 
+cdp_create_env.sh <prefix> <credential> <region> <key> <subnet1> <subnet2> <subnet3> <vpc_id> <knox_sg_id> <default_sg_id>
 ```
+
+
+
+
 
 ### 3. Verify periodically until environment status is AVAILABLE
 

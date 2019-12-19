@@ -43,9 +43,15 @@ prefix=$1
 region=$2
 bucket=${prefix}-cdp-bucket
 
+location_constraint=""
+if [ $region != 'us-east-1' ]
+then
+  location_constraint="--create-bucket-configuration LocationConstraint=$region"
+fi
+
 if [ $(aws s3api head-bucket --bucket $bucket 2>&1 | wc -l) -gt 0 ] 
 then
-    aws s3api create-bucket --bucket $bucket --region $region --create-bucket-configuration LocationConstraint=$region > /dev/null 2>&1
+    aws s3api create-bucket --bucket $bucket --region $region $location_constraint > /dev/null 2>&1
 fi
 
 aws s3api put-object --bucket $bucket --key $prefix-dl/logs/ > /dev/null 2>&1
