@@ -78,7 +78,6 @@ aws2 ec2 authorize-security-group-ingress --group-id $knox_sg_id --protocol tcp 
 aws2 ec2 authorize-security-group-ingress --group-id $knox_sg_id --protocol tcp --port 9443 --cidr 35.166.86.177/32 >> /dev/null 2>&1
 aws2 ec2 authorize-security-group-ingress --group-id $knox_sg_id --protocol tcp --port 0-65535 --cidr 10.0.0.0/16 >> /dev/null 2>&1
 aws2 ec2 authorize-security-group-ingress --group-id $knox_sg_id --protocol udp --port 0-65535 --cidr 10.0.0.0/16 >> /dev/null 2>&1
-aws2 ec2 authorize-security-group-ingress --group-id $knox_sg_id --protocol udp --port 0-65535 --cidr 10.0.0.0/16 >> /dev/null 2>&1
 
 
 default_sg_id=$(aws ec2 create-security-group --description "AWS default security group" --group-name "$prefix-default-sg" --vpc-id $vpc_id | jq -r .GroupId)
@@ -94,6 +93,7 @@ aws2 ec2 authorize-security-group-ingress --group-id $default_sg_id --protocol t
 aws2 ec2 authorize-security-group-ingress --group-id $default_sg_id --protocol tcp --port 9443 --cidr 35.166.86.177/32 >> /dev/null 2>&1
 aws2 ec2 authorize-security-group-ingress --group-id $default_sg_id --protocol tcp --port 5432 --cidr 10.0.0.0/16 >> /dev/null 2>&1
 aws2 ec2 authorize-security-group-ingress --group-id $default_sg_id --protocol tcp --port 0-65535 --cidr 10.0.0.0/16 >> /dev/null 2>&1
+aws2 ec2 authorize-security-group-ingress --group-id $default_sg_id --protocol udp --port 0-65535 --cidr 10.0.0.0/16 >> /dev/null 2>&1
 
 
 echo "{\"InternetGatewayId\": \"$igw_id\", \"VpcId\": \"$vpc_id\", \"Subnets\": [\"$subnet_id1a\", \"$subnet_id1b\", \"$subnet_id1c\"], \"RouteTableId\": \"$route_id\", \"KnoxGroupId\": \"$knox_sg_id\" , \"DefaultGroupId\": \"$default_sg_id\"}"
