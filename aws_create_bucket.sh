@@ -1,16 +1,15 @@
 #!/bin/bash 
+set -o nounset
 
-
- display_usage() { 
-	echo "
+display_usage() { 
+    echo "
 Usage:
-    $(basename "$0") <base_dir> <prefix> <region> [--help or -h]
+    $(basename "$0") [--help or -h] <prefix> <region>
 
 Description:
     Creates buckets and subdirectory for CDP environment
 
 Arguments:
-    base_dir: the base directory of the emr to cdp demo
     prefix:   prefix for your bucket (root will be <prefix>-cdp-bucket)
     region:   region of your bucket
     --help or -h:   displays this help"
@@ -18,7 +17,7 @@ Arguments:
 }
 
 # check whether user had supplied -h or --help . If yes display usage 
-if [[ ( $1 == "--help") ||  $1 == "-h" ]] 
+if [[ ( ${1:-x} == "--help") ||  ${1:-x} == "-h" ]] 
 then 
     display_usage
     exit 0
@@ -26,31 +25,34 @@ fi
 
 
 # Check the numbers of arguments
-if [  $# -lt 3 ] 
+if [  $# -lt 2 ] 
 then 
     echo "Not enough arguments!"
     display_usage
     exit 1
 fi 
 
-if [  $# -gt 3 ] 
+if [  $# -gt 2 ] 
 then 
     echo "Too many arguments!"
     display_usage
     exit 1
 fi 
 
+prefix=$1
+region=$2
+bucket=${prefix}-cdp-bucket
 
 if [ $(aws s3api head-bucket --bucket $bucket 2>&1 | wc -l) -gt 0 ] 
 then
-    aws s3api create-bucket --bucket $bucket --region $3 --create-bucket-configuration LocationConstraint=$3 > /dev/null 2>&1
+    aws s3api create-bucket --bucket $bucket --region $region --create-bucket-configuration LocationConstraint=$region > /dev/null 2>&1
 fi
 
-aws s3api put-object --bucket $bucket --key $2-dl/logs/ > /dev/null 2>&1
-aws s3api put-object --bucket $bucket --key $2-dl/ranger/audit/ > /dev/null 2>&1
-aws s3api put-object --bucket $bucket --key $2-dl/dataeng/ > /dev/null 2>&1
-aws s3api put-object --bucket $bucket --key $2-dl/datasci/ > /dev/null 2>&1
+aws s3api put-object --bucket $bucket --key $prefix-dl/logs/ > /dev/null 2>&1
+aws s3api put-object --bucket $bucket --key $prefix-dl/ranger/audit/ > /dev/null 2>&1
+aws s3api put-object --bucket $bucket --key $prefix-dl/dataeng/ > /dev/null 2>&1
+aws s3api put-object --bucket $bucket --key $prefix-dl/datasci/ > /dev/null 2>&1
 
 
 
-echo '{"bucket": "'$2'-cdp-bucket"}'
+echo '{"bucket": "'$bucket'"}'
